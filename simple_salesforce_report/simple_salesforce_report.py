@@ -3,18 +3,40 @@ from simple_salesforce import Salesforce
 import pandas as pd
 
 class Salesforce_Report():
+    """
+    A class to interact with Salesforce reports.
+    """
     def __init__(self, env_filename):
+        """
+        Initialize SalesforceReport with Salesforce credentials loaded from an environment file.
+
+        Parameters:
+        - env_filename (str): The path to the environment file.
+        """
         self.__sf_username, self.__sf_password, self.__sf_security_token, self.__company_name = self.load_env(env_filename)
         
-        self.__sf = Salesforce(
-        username=self.__sf_username,
-        password=self.__sf_password,
-        security_token=self.__sf_security_token   
-        )
+        self.__sf = None
         
-        ''
+    def _connect_to_salesforce(self):
+        """
+        Connect to Salesforce using the stored credentials.
+        """
+        self._sf = Salesforce(
+            username=self._sf_username,
+            password=self._sf_password,
+            security_token=self._sf_security_token   
+        )
 
     def load_env(self, env_filename):
+        """
+        Load Salesforce credentials from the environment file.
+
+        Parameters:
+        - env_filename (str): The path to the environment file.
+
+        Returns:
+        - Tuple containing Salesforce credentials.
+        """
         config = configparser.ConfigParser()
         config.read(env_filename)
 
@@ -27,6 +49,18 @@ class Salesforce_Report():
         return salesforce_username, salesforce_password, salesforce_security_token, company_name
     
     def get_simple_report(self, report_id):
+        """
+        Retrieve a simple report from Salesforce.
+
+        Parameters:
+        - report_id (str): The ID of the report to retrieve.
+
+        Returns:
+        - DataFrame containing the report data.
+        """
+        if self._sf is None:
+            self._connect_to_salesforce()
+            
         try:
             report_json = self.__sf.restful('analytics/reports/{}'.format(report_id))
         except Exception as e:
@@ -37,6 +71,15 @@ class Salesforce_Report():
         return self.get_simple_report_dataframe(report_json)
     
     def get_simple_report_dataframe(self, report_json):
+        """
+        Convert report JSON to a DataFrame.
+
+        Parameters:
+        - report_json (dict): JSON representation of the report.
+
+        Returns:
+        - DataFrame containing the report data.
+        """
         columns = [report_json['reportExtendedMetadata']['detailColumnInfo'][column_key]['label'] for column_key in report_json['reportExtendedMetadata']['detailColumnInfo'].keys()]
         rows = []
         for record in report_json['factMap']['T!T']['rows']:
