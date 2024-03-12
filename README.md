@@ -40,7 +40,7 @@ SALESFORCE_USERNAME=john.smith@gmail.com
 SALESFORCE_PASSWORD=password
 SALESFORCE_SECURITY_TOKEN=token
 # This is the Salesforce Domain
-COMPANY_NAME=bcpi
+INSTANCE=https://test.lightning.force.com
 ```
 
 ## Dependencies

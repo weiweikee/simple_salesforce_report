@@ -52,9 +52,9 @@ class SalesforceReport():
         salesforce_username = config['DEFAULT']['SALESFORCE_USERNAME']
         salesforce_password = config['DEFAULT']['SALESFORCE_PASSWORD']
         salesforce_security_token = config['DEFAULT']['SALESFORCE_SECURITY_TOKEN']
-        company_name = config['DEFAULT']['COMPANY_NAME']
+        instance = config['DEFAULT']['INSTANCE']
 
-        return salesforce_username, salesforce_password, salesforce_security_token, company_name
+        return salesforce_username, salesforce_password, salesforce_security_token, instance
 
     def get_simple_report(self, report_id):
         """
