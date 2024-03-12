@@ -20,7 +20,7 @@ class SalesforceReport():
         self.__sf_username, \
         self.__sf_password, \
         self.__sf_security_token, \
-        self.__domain = self.load_env(env_filename)
+        self.__instance = self.load_env(env_filename)
 
         self.__sf = self.__connect_to_salesforce()
 
@@ -32,7 +32,7 @@ class SalesforceReport():
             username=self.__sf_username,
             password=self.__sf_password,
             security_token=self.__sf_security_token,
-            domain=self.__domain
+            instance=self.__instance,
         )
 
     def load_env(self, env_filename):

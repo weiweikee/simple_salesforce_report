@@ -1,4 +1,6 @@
 # Simple Salesforce Report
+[![Pylint](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pylint.yml/badge.svg)](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pylint.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/weiweikee/simple_salesforce_report/blob/main/LICENSE)
 
 The Salesforce Report Package is a Python library that provides functionality to interact with Salesforce reports using the [Simple Salesforce](https://github.com/simple-salesforce/simple-salesforce).
 
