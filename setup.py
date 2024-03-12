@@ -1,3 +1,4 @@
+"""Simple_Salesforce_Report Package Setup"""
 from setuptools import setup, find_packages
 
 setup(
@@ -8,7 +9,6 @@ setup(
         'simple_salesforce',
         'pandas',
     ],
-    
     author='Wei-Wei Chi',
     author_email='weiweikee@gmail.com',
     description='Interface to create Pandas Dataframe from Salesforce Report',

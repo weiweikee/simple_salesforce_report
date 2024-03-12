@@ -1,8 +1,12 @@
+"""
+Module: simple_salesforce_report.py
+A module for interacting with Salesforce reports.
+"""
 import configparser
 from simple_salesforce import Salesforce
+from simple_salesforce.exceptions import SalesforceMalformedRequest
 import pandas as pd
-
-class Salesforce_Report():
+class SalesforceReport():
     """
     A class to interact with Salesforce reports.
     """
@@ -13,18 +17,22 @@ class Salesforce_Report():
         Parameters:
         - env_filename (str): The path to the environment file.
         """
-        self.__sf_username, self.__sf_password, self.__sf_security_token, self.__company_name = self.load_env(env_filename)
-        
-        self.__sf = None
-        
-    def _connect_to_salesforce(self):
+        self.__sf_username, \
+        self.__sf_password, \
+        self.__sf_security_token, \
+        self.__domain = self.load_env(env_filename)
+
+        self.__sf = self.__connect_to_salesforce()
+
+    def __connect_to_salesforce(self):
         """
         Connect to Salesforce using the stored credentials.
         """
-        self._sf = Salesforce(
-            username=self._sf_username,
-            password=self._sf_password,
-            security_token=self._sf_security_token   
+        return Salesforce(
+            username=self.__sf_username,
+            password=self.__sf_password,
+            security_token=self.__sf_security_token,
+            domain=self.__domain
         )
 
     def load_env(self, env_filename):
@@ -47,7 +55,7 @@ class Salesforce_Report():
         company_name = config['DEFAULT']['COMPANY_NAME']
 
         return salesforce_username, salesforce_password, salesforce_security_token, company_name
-    
+
     def get_simple_report(self, report_id):
         """
         Retrieve a simple report from Salesforce.
@@ -58,18 +66,15 @@ class Salesforce_Report():
         Returns:
         - DataFrame containing the report data.
         """
-        if self._sf is None:
-            self._connect_to_salesforce()
-            
+        if self.__sf is None:
+            self.__sf = self.__connect_to_salesforce()
         try:
-            report_json = self.__sf.restful('analytics/reports/{}'.format(report_id))
-        except Exception as e:
-            print("Error:", e)
-            print("Response Status Code:", getattr(e, "status_code", None))
-            return None  # Handle the error gracefully or raise an exception
-        
+            report_json = self.__sf.restful(f'analytics/reports/{report_id}')
+        except SalesforceMalformedRequest as error:
+            print(f"Malformed request error: {error}")
+            return None #Handle the error gracefully or raise an exception
         return self.get_simple_report_dataframe(report_json)
-    
+
     def get_simple_report_dataframe(self, report_json):
         """
         Convert report JSON to a DataFrame.
@@ -80,15 +85,15 @@ class Salesforce_Report():
         Returns:
         - DataFrame containing the report data.
         """
-        columns = [report_json['reportExtendedMetadata']['detailColumnInfo'][column_key]['label'] for column_key in report_json['reportExtendedMetadata']['detailColumnInfo'].keys()]
+        detail_column_info = report_json['reportExtendedMetadata']['detailColumnInfo']
+        columns = [
+            detail_column_info[column_key]['label']
+            for column_key in detail_column_info.keys()
+        ]
         rows = []
         for record in report_json['factMap']['T!T']['rows']:
             column_data = []
             for var in record['dataCells']:
                 column_data.append(var['label'])
             rows.append(column_data)
-    
         return pd.DataFrame(rows, columns=columns)
-    
-    
-    
