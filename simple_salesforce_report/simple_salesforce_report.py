@@ -10,17 +10,20 @@ class SalesforceReport():
     """
     A class to interact with Salesforce reports.
     """
-    def __init__(self, env_filename):
+    def __init__(self, sf_username, sf_password, sf_security_token, sf_instance):
         """
-        Initialize SalesforceReport with Salesforce credentials loaded from an environment file.
+        Initialize SalesforceReport with Salesforce credentials.
 
         Parameters:
-        - env_filename (str): The path to the environment file.
+        - sf_username (str): The Salesforce username.
+        - sf_password (str): The Salesforce password.
+        - sf_security_token (str): The Salesforce security token.
+        - sf_instance (str): The Salesforce instance URL.
         """
-        self.__sf_username, \
-        self.__sf_password, \
-        self.__sf_security_token, \
-        self.__instance = self.load_env(env_filename)
+        self.__sf_username = sf_username
+        self.__sf_password = sf_password
+        self.__sf_security_token = sf_security_token
+        self.__sf_instance = sf_instance
 
         self.__sf = self.__connect_to_salesforce()
 
@@ -32,7 +35,7 @@ class SalesforceReport():
             username=self.__sf_username,
             password=self.__sf_password,
             security_token=self.__sf_security_token,
-            instance=self.__instance,
+            instance=self.__sf_instance,
         )
 
     def load_env(self, env_filename):
