@@ -18,4 +18,5 @@ Example:
     >>> report = Salesforce_Report(env_filename='config.env')
 """
 from .simple_salesforce_report import SalesforceReport
+
 __all__ = ["SalesforceReport"]

@@ -2,16 +2,25 @@
 Module: simple_salesforce_report.py
 A module for interacting with Salesforce reports.
 """
+
 from typing import Any, Dict, Optional
 from simple_salesforce import Salesforce
 from simple_salesforce.exceptions import SalesforceMalformedRequest
 import pandas as pd
-class SalesforceReport():
+
+
+class SalesforceReport:
     """
     A class to interact with Salesforce reports.
     """
-    def __init__(self, sf_username: str, sf_password: str, \
-        sf_security_token: str, sf_instance: str) -> None:
+
+    def __init__(
+        self,
+        sf_username: str,
+        sf_password: str,
+        sf_security_token: str,
+        sf_instance: str,
+    ) -> None:
         """
         Initialize SalesforceReport with Salesforce credentials.
 
@@ -52,10 +61,10 @@ class SalesforceReport():
         if self.__sf is None:
             self.__sf = self.__connect_to_salesforce()
         try:
-            report_json = self.__sf.restful(f'analytics/reports/{report_id}')
+            report_json = self.__sf.restful(f"analytics/reports/{report_id}")
         except SalesforceMalformedRequest as error:
             print(f"Malformed request error: {error}")
-            return None #Handle the error gracefully or raise an exception
+            return None  # Handle the error gracefully or raise an exception
         return self.get_simple_report_dataframe(report_json)
 
     def get_simple_report_dataframe(self, report_json: Dict[str, Any]) -> pd.DataFrame:
@@ -68,15 +77,15 @@ class SalesforceReport():
         Returns:
         - DataFrame containing the report data.
         """
-        detail_column_info = report_json['reportExtendedMetadata']['detailColumnInfo']
+        detail_column_info = report_json["reportExtendedMetadata"]["detailColumnInfo"]
         columns = [
-            detail_column_info[column_key]['label']
+            detail_column_info[column_key]["label"]
             for column_key in detail_column_info.keys()
         ]
         rows = []
-        for record in report_json['factMap']['T!T']['rows']:
+        for record in report_json["factMap"]["T!T"]["rows"]:
             column_data = []
-            for var in record['dataCells']:
-                column_data.append(var['label'])
+            for var in record["dataCells"]:
+                column_data.append(var["label"])
             rows.append(column_data)
         return pd.DataFrame(rows, columns=columns)
