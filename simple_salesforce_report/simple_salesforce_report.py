@@ -2,6 +2,7 @@
 Module: simple_salesforce_report.py
 A module for interacting with Salesforce reports.
 """
+from typing import Any, Dict, Optional
 from simple_salesforce import Salesforce
 from simple_salesforce.exceptions import SalesforceMalformedRequest
 import pandas as pd
@@ -9,7 +10,8 @@ class SalesforceReport():
     """
     A class to interact with Salesforce reports.
     """
-    def __init__(self, sf_username, sf_password, sf_security_token, sf_instance):
+    def __init__(self, sf_username: str, sf_password: str, \
+        sf_security_token: str, sf_instance: str) -> None:
         """
         Initialize SalesforceReport with Salesforce credentials.
 
@@ -26,7 +28,7 @@ class SalesforceReport():
 
         self.__sf = self.__connect_to_salesforce()
 
-    def __connect_to_salesforce(self):
+    def __connect_to_salesforce(self) -> Optional[Salesforce]:
         """
         Connect to Salesforce using the stored credentials.
         """
@@ -37,7 +39,7 @@ class SalesforceReport():
             instance=self.__sf_instance,
         )
 
-    def get_simple_report(self, report_id):
+    def get_simple_report(self, report_id: str) -> Optional[pd.DataFrame]:
         """
         Retrieve a simple report from Salesforce.
 
@@ -56,7 +58,7 @@ class SalesforceReport():
             return None #Handle the error gracefully or raise an exception
         return self.get_simple_report_dataframe(report_json)
 
-    def get_simple_report_dataframe(self, report_json):
+    def get_simple_report_dataframe(self, report_json: Dict[str, Any]) -> pd.DataFrame:
         """
         Convert report JSON to a DataFrame.
 
