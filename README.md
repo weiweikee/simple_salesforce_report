@@ -27,23 +27,18 @@ from simple_salesforce_report import Salesforce_Report
 ```
 2. Providing an environment file containing Salesforce credentials and company information.
 ```
-sf_report = Salesforce_Report(env_filepath)
+sf_report = Salesforce_Report(
+        sf_username,
+        sf_password,
+        sf_security_token,
+        sf_instance,
+    )
 ```
 
 3. Then, you can retrieve reports and convert them into pandas DataFrames.
 ```
 df = sf_report.get_simple_report(report_id)
 ```
-## Example Env
-```env
-[DEFAULT]
-SALESFORCE_USERNAME=john.smith@gmail.com
-SALESFORCE_PASSWORD=password
-SALESFORCE_SECURITY_TOKEN=token
-# This is the Salesforce Domain
-INSTANCE=https://test.lightning.force.com
-```
-
 ## Dependencies
 - simple_salesforce: A Python library for interacting with Salesforce APIs.
 - pandas: A powerful data manipulation library in Python.
