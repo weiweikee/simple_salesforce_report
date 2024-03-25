@@ -34,6 +34,7 @@ sf_report = Salesforce_Report(
         sf_instance,
     )
 ```
+Please refer to [Simple Salesforce](https://github.com/simple-salesforce/simple-salesforce) for Arguments Examples.
 
 3. Then, you can retrieve reports and convert them into pandas DataFrames.
 ```
