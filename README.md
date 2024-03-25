@@ -17,6 +17,11 @@ To install the package, you can use pip:
 pip install git+https://github.com/weiweikee/simple_salesforce_report
 ```
 
+To upgrade the package, you can use:
+```
+pip install --upgrade git+https://github.com/weiweikee/simple_salesforce_report
+```
+
 ## Usage
 To use this package
 
