@@ -3,11 +3,11 @@ Module: simple_salesforce_report.py
 A module for interacting with Salesforce reports.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Callable, List, Tuple, OrderedDict
 from simple_salesforce import Salesforce
 from simple_salesforce.exceptions import SalesforceMalformedRequest
 import pandas as pd
-
+import requests
 
 class SalesforceReport:
     """
@@ -15,23 +15,74 @@ class SalesforceReport:
     """
 
     def __init__(
-        self, *args, **kwargs
-    ) -> None:
+        self,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        security_token: Optional[str] = None,
+        session_id: Optional[str] = None,
+        instance: Optional[str] = None,
+        instance_url: Optional[str] = None,
+        organization_id: Optional[str] = None,
+        version: Optional[str] = Salesforce.DEFAULT_API_VERSION,
+        proxies: Optional[dict] = None,
+        session: Optional[requests.Session] = None,
+        client_id: Optional[str] = None,
+        domain: Optional[str] = None,
+        consumer_key: Optional[str] = None,
+        consumer_secret: Optional[str] = None,
+        privatekey_file: Optional[str] = None,
+        privatekey: Optional[str] = None,
+        parse_float: Optional[Callable[[str], Any]] = None,
+        object_pairs_hook: Optional[Callable[[List[Tuple[Any, Any]]], Any]] = OrderedDict,
+        **kwargs
+    ):
         """
-        Initialize SalesforceReport with Salesforce credentials.
+        Initializes an instance of Simple Salesforce within your module.
 
-        Parameters:
-        - sf_username (str): The Salesforce username.
-        - sf_password (str): The Salesforce password.
-        - sf_security_token (str): The Salesforce security token.
-        - sf_instance (str): The Salesforce instance URL.
+        Args:
+            username (str): Salesforce username.
+            password (str): Salesforce password.
+            security_token (str): Salesforce security token.
+            session_id (str): Salesforce session ID.
+            instance (str): Salesforce instance URL.
+            instance_url (str): Salesforce instance URL.
+            organizationId (str): Salesforce organization ID.
+            version (str): Salesforce API version.
+            proxies (dict): Proxy configuration.
+            session (requests.Session): HTTP session.
+            client_id (str): Salesforce client ID.
+            domain (str): Salesforce domain.
+            consumer_key (str): Salesforce consumer key.
+            consumer_secret (str): Salesforce consumer secret.
+            privatekey_file (str): Path to private key file.
+            privatekey (str): Private key.
+            parse_float (Callable[[str], Any]): Function to parse floats.
+            object_pairs_hook (Callable[[List[Tuple[Any, Any]]], Any]): 
+                Function to hook for converting JSON object pairs.
+
+            **kwargs: Additional keyword arguments to pass to Simple Salesforce.
         """
-        # self.__sf_username = sf_username
-        # self.__sf_password = sf_password
-        # self.__sf_security_token = sf_security_token
-        # self.__sf_instance = sf_instance
-
-        self.__sf = self.__connect_to_salesforce(*args, **kwargs)
+        self.__sf = self.__connect_to_salesforce(
+            username=username,
+            password=password,
+            security_token=security_token,
+            session_id=session_id,
+            instance=instance,
+            instance_url=instance_url,
+            organizationId=organization_id,
+            version=version,
+            proxies=proxies,
+            session=session,
+            client_id=client_id,
+            domain=domain,
+            consumer_key=consumer_key,
+            consumer_secret=consumer_secret,
+            privatekey_file=privatekey_file,
+            privatekey=privatekey,
+            parse_float=parse_float,
+            object_pairs_hook=object_pairs_hook,
+            **kwargs
+        )
 
     def __connect_to_salesforce(self, *args, **kwargs) -> Optional[Salesforce]:
         """
