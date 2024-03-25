@@ -15,11 +15,7 @@ class SalesforceReport:
     """
 
     def __init__(
-        self,
-        sf_username: str,
-        sf_password: str,
-        sf_security_token: str,
-        sf_instance: str,
+        self, *args, **kwargs
     ) -> None:
         """
         Initialize SalesforceReport with Salesforce credentials.
@@ -30,23 +26,18 @@ class SalesforceReport:
         - sf_security_token (str): The Salesforce security token.
         - sf_instance (str): The Salesforce instance URL.
         """
-        self.__sf_username = sf_username
-        self.__sf_password = sf_password
-        self.__sf_security_token = sf_security_token
-        self.__sf_instance = sf_instance
+        # self.__sf_username = sf_username
+        # self.__sf_password = sf_password
+        # self.__sf_security_token = sf_security_token
+        # self.__sf_instance = sf_instance
 
-        self.__sf = self.__connect_to_salesforce()
+        self.__sf = self.__connect_to_salesforce(*args, **kwargs)
 
-    def __connect_to_salesforce(self) -> Optional[Salesforce]:
+    def __connect_to_salesforce(self, *args, **kwargs) -> Optional[Salesforce]:
         """
         Connect to Salesforce using the stored credentials.
         """
-        return Salesforce(
-            username=self.__sf_username,
-            password=self.__sf_password,
-            security_token=self.__sf_security_token,
-            instance=self.__sf_instance,
-        )
+        return Salesforce(*args, **kwargs)
 
     def get_simple_report(self, report_id: str) -> Optional[pd.DataFrame]:
         """
