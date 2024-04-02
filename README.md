@@ -1,5 +1,6 @@
 # Simple Salesforce Report
 [![Pylint](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pylint.yml/badge.svg)](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pylint.yml)
+[![pytest](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pytest.yml/badge.svg)](https://github.com/weiweikee/simple_salesforce_report/actions/workflows/pylint.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/weiweikee/simple_salesforce_report/blob/main/LICENSE)
 
