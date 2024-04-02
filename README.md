@@ -37,6 +37,7 @@ sf_report = Salesforce_Report(
         sf_username,
         sf_password,
         sf_security_token,
+        sf_domain,
     )
 ```
 Please refer to [Simple Salesforce](https://github.com/simple-salesforce/simple-salesforce) for Arguments Examples.
