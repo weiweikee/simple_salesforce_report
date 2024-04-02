@@ -1,7 +1,10 @@
+"""
+Test module for the SalesforceReport class.
+"""
 import pytest
-from unittest.mock import patch
-from simple_salesforce_report import SalesforceReport
 import pandas as pd
+from simple_salesforce_report import SalesforceReport
+
 
 # Sample report JSON data
 sample_report_json = {
@@ -23,6 +26,7 @@ sample_report_json = {
 
 
 def test_initialization_missing_credentials():
+    """Tests that a TypeError is raised when credentials are missing during initialization."""
     with pytest.raises(TypeError) as excinfo:
         SalesforceReport()
     assert "You must provide login information or an instance and token" in str(
@@ -31,6 +35,7 @@ def test_initialization_missing_credentials():
 
 
 def test_get_simple_report_dataframe():  # Assuming you have a fixture
+    """Tests the get_simple_report_dataframe method.""" 
     result_df = SalesforceReport.get_simple_report_dataframe(sample_report_json)
 
     # Assert the DataFrame structure
