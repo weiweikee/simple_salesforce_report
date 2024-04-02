@@ -8,6 +8,7 @@ from simple_salesforce import Salesforce
 from simple_salesforce.exceptions import SalesforceMalformedRequest
 import pandas as pd
 
+
 class SalesforceReport:
     """
     A class to interact with Salesforce reports.
@@ -18,7 +19,7 @@ class SalesforceReport:
         username: Optional[str] = None,
         password: Optional[str] = None,
         security_token: Optional[str] = None,
-        **kwargs
+        domain: Optional[str] = None,
     ):
         """
         Initializes an instance of Simple Salesforce within your module.
@@ -27,31 +28,23 @@ class SalesforceReport:
             username (str): Salesforce username.
             password (str): Salesforce password.
             security_token (str): Salesforce security token.
-            session_id (str): Salesforce session ID.
-            instance (str): Salesforce instance URL.
-            instance_url (str): Salesforce instance URL.
-            organizationId (str): Salesforce organization ID.
-            version (str): Salesforce API version.
-            proxies (dict): Proxy configuration.
-            session (requests.Session): HTTP session.
-            client_id (str): Salesforce client ID.
             domain (str): Salesforce domain.
-            consumer_key (str): Salesforce consumer key.
-            consumer_secret (str): Salesforce consumer secret.
-            privatekey_file (str): Path to private key file.
-            privatekey (str): Private key.
-            parse_float (Callable[[str], Any]): Function to parse floats.
-            object_pairs_hook (Callable[[List[Tuple[Any, Any]]], Any]): 
-                Function to hook for converting JSON object pairs.
-
-            **kwargs: Additional keyword arguments to pass to Simple Salesforce.
         """
-        self.__sf = self.__connect_to_salesforce(
-            username=username,
-            password=password,
-            security_token=security_token,
-            **kwargs
-        )
+        self.username = username
+        self.password = password
+        self.security_token = security_token
+        self.domain = domain
+        if self.username and self.password and self.security_token and self.domain:
+            self.sf = self.__connect_to_salesforce(
+                username=self.username,
+                password=self.password,
+                security_token=self.security_token,
+                domain=self.domain,
+            )
+        else:
+            raise TypeError(
+                "You must provide login information or an instance and token"
+            )
 
     def __connect_to_salesforce(self, *args, **kwargs) -> Optional[Salesforce]:
         """
@@ -69,16 +62,16 @@ class SalesforceReport:
         Returns:
         - DataFrame containing the report data.
         """
-        if self.__sf is None:
-            self.__sf = self.__connect_to_salesforce()
+
         try:
-            report_json = self.__sf.restful(f"analytics/reports/{report_id}")
+            report_json = self.sf.restful(f"analytics/reports/{report_id}")
         except SalesforceMalformedRequest as error:
             print(f"Malformed request error: {error}")
             return None  # Handle the error gracefully or raise an exception
-        return self.get_simple_report_dataframe(report_json)
+        return SalesforceReport.get_simple_report_dataframe(report_json)
 
-    def get_simple_report_dataframe(self, report_json: Dict[str, Any]) -> pd.DataFrame:
+    @staticmethod
+    def get_simple_report_dataframe(report_json: Dict[str, Any]) -> pd.DataFrame:
         """
         Convert report JSON to a DataFrame.
 
