@@ -34,12 +34,11 @@ class SalesforceReport:
         self.password = password
         self.security_token = security_token
         self.domain = domain
-        if self.username and self.password and self.security_token and self.domain:
+        if self.username and self.password and self.security_token:
             self.sf = self.__connect_to_salesforce(
                 username=self.username,
                 password=self.password,
                 security_token=self.security_token,
-                domain=self.domain,
             )
         else:
             raise TypeError(

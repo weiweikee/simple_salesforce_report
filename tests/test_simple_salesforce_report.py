@@ -1,6 +1,7 @@
 """
 Test module for the SalesforceReport class.
 """
+
 import pytest
 import pandas as pd
 from simple_salesforce_report import SalesforceReport
@@ -35,7 +36,7 @@ def test_initialization_missing_credentials():
 
 
 def test_get_simple_report_dataframe():  # Assuming you have a fixture
-    """Tests the get_simple_report_dataframe method.""" 
+    """Tests the get_simple_report_dataframe method."""
     result_df = SalesforceReport.get_simple_report_dataframe(sample_report_json)
 
     # Assert the DataFrame structure
