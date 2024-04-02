@@ -15,9 +15,10 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.11", "3.12"]
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +31,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         pip install -e .
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements.txt
     - name: Test with pytest
       run: |
         pytest
