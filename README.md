@@ -5,12 +5,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/weiweikee/simple_salesforce_report/blob/main/LICENSE)
 
 The Salesforce Report Package is a Python library that provides functionality to interact with Salesforce reports using the [Simple Salesforce](https://github.com/simple-salesforce/simple-salesforce).
+> [!WARNING]
+> [Salesforce Reports and Dashboards REST API only support 2000 rows](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm)
 
+--- 
 ## Overview
 This package enables you to retrieve Salesforce reports and convert them into pandas DataFrames for further analysis and processing within your Python environment. It simplifies the process of fetching Salesforce report data and makes it easy to work with in data analysis workflows.
 
-### Note
-This only works for salesforce report that do **NOT** have <ins>**GROUPED ROWS**</ins> or <ins>**GROUPED COLUMNS**</ins>.
+> [!IMPORTANT]
+> This only works for salesforce report that do **NOT** have <ins>**GROUPED ROWS**</ins> or <ins>**GROUPED COLUMNS**</ins> for now.
 
 ## Installation
 To install the package, you can use pip:
@@ -52,3 +55,4 @@ df = sf_report.get_simple_report(report_id)
 
 ## License
 This package is licensed under the MIT License. See the LICENSE file for details.
+
